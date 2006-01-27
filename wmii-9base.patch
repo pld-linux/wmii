@@ -1,0 +1,219 @@
+diff -Nur wmii-2.5.1/cmd/wm/wmii wmii-2.5.1.new/cmd/wm/wmii
+--- wmii-2.5.1/cmd/wm/wmii	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/cmd/wm/wmii	2006-01-27 16:05:38.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # window manager improved 2 wrapper
+ 
+ if(! ~ $#* 0) {
+@@ -11,8 +11,8 @@
+ 
+ WMII_CONFDIR=CONFPREFIX/wmii-2.5
+ OLD_PATH=$PATH
+-PATH=$HOME/.wmii-2.5:$WMII_CONFDIR:9PREFIX/bin:$PATH
+-WMII_IDENT=`{date -n}^'-'^$pid
++PATH=$HOME/.wmii-2.5:$WMII_CONFDIR:$PATH
++WMII_IDENT=`{9date -n}^'-'^$pid
+ WMIIR_SOCKET=/tmp/.ixp-$USER/wmiifs-$WMII_IDENT
+ 
+ # start window manager and utilities:
+@@ -23,7 +23,7 @@
+ wmiikeys -s /tmp/.ixp-$USER/wmiikeys-$WMII_IDENT &
+ wmiibar -s /tmp/.ixp-$USER/wmiibar-$WMII_IDENT &
+ wmiimenu -s /tmp/.ixp-$USER/wmiimenu-$WMII_IDENT &
+-sleep 1
++9sleep 1
+ 
+ # mount ixp file systems:
+ wmiir write /ctl 'bind /wm /tmp/.ixp-'^$USER/wmiiwm-$WMII_IDENT
+diff -Nur wmii-2.5.1/config.mk wmii-2.5.1.new/config.mk
+--- wmii-2.5.1/config.mk	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/config.mk	2006-01-27 15:52:13.000000000 +0000
+@@ -1,15 +1,15 @@
+ # Customize to fit your system
+ 
+ # paths
+-PREFIX = /usr/local
+-CONFPREFIX = ${PREFIX}/etc
++PREFIX = /usr
++CONFPREFIX = /etc/X11
+ MANPREFIX = ${PREFIX}/share/man
+-9PREFIX = ${PREFIX}/9
++9PREFIX = /usr
+ 
+ INCDIR = ${PREFIX}/include
+-LIBDIR = ${PREFIX}/lib
++LIBDIR = ${PREFIX}/$(LIB)
+ X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11LIB = /usr/X11R6/$(LIB)
+ 
+ # includes and libs
+ INCLUDES = -I. -I${INCDIR} -I/usr/include -I${X11INC}
+@@ -17,8 +17,8 @@
+ VERSION = 2.5.1
+ 
+ # flags
+-CFLAGS = -g -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
+-LDFLAGS = ${LIBS}
++CFLAGS = $(OPTCFLAGS) -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
++LDFLAGS = $(OPTLDFLAGS) ${LIBS}
+ 
+ # compiler
+ # Note: - under Solaris add -D__EXTENSIONS__ to CFLAGS
+diff -Nur wmii-2.5.1/rc/extern wmii-2.5.1.new/rc/extern
+--- wmii-2.5.1/rc/extern	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/extern	2006-01-27 15:53:27.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # clean the environment and execute the given command
+ 
+ PATH=$OLD_PATH
+diff -Nur wmii-2.5.1/rc/kmode wmii-2.5.1.new/rc/kmode
+--- wmii-2.5.1/rc/kmode	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/kmode	2006-01-27 16:03:53.000000000 +0000
+@@ -1,11 +1,11 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # activate shortcuts of the given mode
+ 
+ wmiir write /keys/grab-keyb 0
+ wmiir write /keys/lookup /mode/$1
+ 
+-plab_cmd=`{wmiir read /wm/event/page-update | sed -e 's/\\//'}
++plab_cmd=`{wmiir read /wm/event/page-update | 9sed -e 's/\\//'}
+ if (! ~ $#plab_cmd 0) eval $"plab_cmd
+ 
+ #wmiir write /bar/$plab/data \
+-#`{wmiir read /bar/$plab/data | sed -e 's/.$/'^`{echo $2 | cut -b1}^'/'}
++#`{wmiir read /bar/$plab/data | 9sed -e 's/.$/'^`{9echo $2 | cut -b1}^'/'}
+diff -Nur wmii-2.5.1/rc/quit wmii-2.5.1.new/rc/quit
+--- wmii-2.5.1/rc/quit	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/quit	2006-01-27 15:53:27.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # quit wmii
+ 
+ wmiir write /wm/ctl quit
+diff -Nur wmii-2.5.1/rc/status wmii-2.5.1.new/rc/status
+--- wmii-2.5.1/rc/status	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/status	2006-01-27 16:02:38.000000000 +0000
+@@ -1,12 +1,12 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # periodically print date and load average to the bar
+ 
+ PIDFILE=/tmp/.ixp-$USER/statuspid-$WMII_IDENT
+ 
+-if(test -r $PIDFILE) {
+-    kill -2 `{cat $PIDFILE} >[2]/dev/null
++if(9test -r $PIDFILE) {
++    kill -2 `{9cat $PIDFILE} >[2]/dev/null
+ }
+-echo $pid >$PIDFILE
++9echo $pid >$PIDFILE
+ 
+ label=`{wmiir read /bar/new}
+ wmiir write /bar/$label/b1press 'wmiir write /wm/ctl ''select prev'''
+@@ -16,7 +16,7 @@
+ 
+ # install signal handler for artificial sigexit:
+ fn sigint {
+-    if(test -f $PIDFILE && ~ `{cat $PIDFILE} $pid)
++    if(9test -f $PIDFILE && ~ `{9cat $PIDFILE} $pid)
+         rm -f $PIDFILE
+     wmiir write /bar/ctl 'destroy '^$label
+     exit
+@@ -24,11 +24,11 @@
+ 
+ fn statustext {
+     # if you need a formatted date, use awk
+-    echo (`{date} `{uptime | sed 's/.*://; s/,//g'})
++    9echo (`{9date} `{uptime | 9sed 's/.*://; s/,//g'})
+ }
+ 
+ text=`{statustext}
+ while(wmiir write /bar/$label/data $"text >[2]/dev/null) {
+-    sleep 2
++    9sleep 2
+     text=`{statustext}
+ }
+diff -Nur wmii-2.5.1/rc/welcome wmii-2.5.1.new/rc/welcome
+--- wmii-2.5.1/rc/welcome	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/welcome	2006-01-27 15:53:27.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # display a welcome message that contains the wmii tutorial
+ 
+ xmessage -file - <<END
+diff -Nur wmii-2.5.1/rc/wmiirc wmii-2.5.1.new/rc/wmiirc
+--- wmii-2.5.1/rc/wmiirc	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/rc/wmiirc	2006-01-27 15:58:19.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!9PREFIX/bin/rc
++#!/usr/bin/9rc
+ # configure wmii
+ 
+ TAB_HEIGHT=16
+@@ -41,17 +41,17 @@
+ }
+ 
+ fn items {
+-    ifs=:$nl { dirs=`{echo $2} }
++    ifs=:$nl { dirs=`{9echo $2} }
+     {
+         for(dir in $dirs) {
+             for(file in $dir/*) {
+-                if(! ~ $file $dir^'/*' && ! test -d $file && test -x $file) {
+-                    file=`{basename $file}
+-                    echo create /menu/items/$1/$"file $"file
++                if(! ~ $file $dir^'/*' && ! 9test -d $file && 9test -x $file) {
++                    file=`{9basename $file}
++                    9echo create /menu/items/$1/$"file $"file
+                 }
+             }
+         }
+-    } | sort | wmiir -f &
++    } | 9sort | wmiir -f &
+ }
+ 
+ fn frameconf {
+@@ -65,7 +65,7 @@
+ }
+ 
+ fn framesconf {
+-    for(frame in `{wmiir read $1 | grep '^[0-9]'})
++    for(frame in `{wmiir read $1 | 9grep '^[0-9]'})
+         frameconf $1/$frame $2
+ }
+ 
+@@ -121,11 +121,11 @@
+ wmiir write /bar/'^$clab^'/data $"text'
+ wmiir write /wm/event/page-update \
+ 'text=`{wmiir read /wm/page/sel/name} ^ \
+-`{wmiir read /wm/page/sel/mode/name|awk ''{print substr($0,0,1)}''} ^ \
+-`{wmiir read /keys/lookup|awk ''{print substr($0,7,1)}''} \
++`{wmiir read /wm/page/sel/mode/name|9awk ''{print substr($0,0,1)}''} ^ \
++`{wmiir read /keys/lookup|9awk ''{print substr($0,7,1)}''} \
+ wmiir write /bar/'^$plab^'/data $"text'
+ 
+-for(page in `{wmiir read /wm/page | grep '^[0-9]'}) {
++for(page in `{wmiir read /wm/page | 9grep '^[0-9]'}) {
+     framesconf /wm/page/$page/floating refresh
+     framesconf /wm/page/$page/managed refresh
+ }
+--- wmii-2.5.1/libwmii/spawn.c	2006-01-12 17:36:54.000000000 +0100
++++ wmii-2.5.1.new/libwmii/spawn.c	2006-01-27 17:24:23.000000000 +0100
+@@ -21,7 +21,7 @@
+ 		if (fork() == 0) {
+ 			setsid();
+ 			close(ConnectionNumber(dpy));
+-			execlp("rc", "rc", "-c", cmd, (char *) 0);
++			execlp("9rc", "9rc", "-c", cmd, (char *) 0);
+ 			perror("failed");
+ 			exit(1);
+ 		}
