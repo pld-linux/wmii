@@ -8,7 +8,8 @@ Group:		X11/Window Managers
 Source0:	http://wmii.de/download/%{name}-%{version}.tar.gz
 # Source0-md5:	fd2ab30ba59079a98159410d2ef6fa0b
 Source1:	%{name}.desktop
-Patch0:		%{name}-9base.patch
+Patch0:		%{name}-Makefile.patch
+Patch1:		%{name}-9base.patch
 URL:		http://wmii.de/
 BuildRequires:	XFree86-devel
 Requires:	9base
@@ -28,6 +29,7 @@ linii kodu.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} \
