@@ -1,5 +1,5 @@
-#
-Summary:	window manager improved 2
+Summary:	Window manager improved 2
+Summary(pl):	Window manager improved 2 - ulepszony zarz±dca okien
 Name:		wmii
 Version:	2.5.1
 Release:	1
@@ -18,6 +18,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 wmii is a minimalist window manager with a small memory footprint. One
 design goal is not to exceed 10.000 lines of code. Thus it has one of
 the highest functionality/LOC ratios ever seen in a window manager.
+
+%description -l pl
+wmii to minimalistyczny zarz±dca okien o niewielkim zu¿yciu pamiêci.
+Jednym z jego celów jest nieprzekroczenie 10000 linii kodu, dziêki
+czemu ma jeden z najwiêkszych wspó³czynników funkcjonalno¶ci do liczby
+linii kodu.
 
 %prep
 %setup -q
