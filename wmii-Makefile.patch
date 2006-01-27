@@ -1,0 +1,47 @@
+diff -Nur wmii-2.5.1/config.mk wmii-2.5.1.new/config.mk
+--- wmii-2.5.1/config.mk	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/config.mk	2006-01-27 15:52:13.000000000 +0000
+@@ -1,15 +1,15 @@
+ # Customize to fit your system
+ 
+ # paths
+-PREFIX = /usr/local
+-CONFPREFIX = ${PREFIX}/etc
++PREFIX = /usr
++CONFPREFIX = /etc/X11
+ MANPREFIX = ${PREFIX}/share/man
+-9PREFIX = ${PREFIX}/9
++9PREFIX = /usr
+ 
+ INCDIR = ${PREFIX}/include
+-LIBDIR = ${PREFIX}/lib
++LIBDIR = ${PREFIX}/$(LIB)
+ X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11LIB = /usr/X11R6/$(LIB)
+ 
+ # includes and libs
+ INCLUDES = -I. -I${INCDIR} -I/usr/include -I${X11INC}
+@@ -17,8 +17,8 @@
+ VERSION = 2.5.1
+ 
+ # flags
+-CFLAGS = -g -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
+-LDFLAGS = ${LIBS}
++CFLAGS = $(OPTCFLAGS) -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
++LDFLAGS = $(OPTLDFLAGS) ${LIBS}
+ 
+ # compiler
+ # Note: - under Solaris add -D__EXTENSIONS__ to CFLAGS
+diff -Nur wmii-2.5.1/cmd/Makefile wmii-2.5.1.new/cmd/Makefile
+--- wmii-2.5.1/cmd/Makefile	2006-01-12 16:36:54.000000000 +0000
++++ wmii-2.5.1.new/cmd/Makefile	2006-01-27 20:47:47.000000000 +0000
+@@ -45,7 +45,7 @@
+ 
+ wmiir: ${OBJ_r}
+ 	@echo LD $@
+-	@${CC} -o $@ ${OBJ_r} -g -static -L${PREFIX}/lib -L/usr/lib -lc \
++	@${CC} -o $@ ${OBJ_r} ${LDFLAGS} -L${PREFIX}/lib -L/usr/$(LIB) -lc \
+ 		-L../libixp -lixp -L../libcext -lcext
+ 
+ wmiifs: ${OBJ_fs}
