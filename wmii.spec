@@ -1,5 +1,5 @@
 Summary:	Window manager improved 2
-Summary(pl.UTF-8):   Window manager improved 2 - ulepszony zarządca okien
+Summary(pl.UTF-8):	Window manager improved 2 - ulepszony zarządca okien
 Name:		wmii
 Version:	2.5.1
 Release:	1
