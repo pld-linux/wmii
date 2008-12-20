@@ -1,17 +1,17 @@
 Summary:	Window manager improved 2
 Summary(pl.UTF-8):	Window manager improved 2 - ulepszony zarządca okien
 Name:		wmii
-Version:	2.5.1
+Version:	2.5.2
 Release:	1
 License:	MIT
 Group:		X11/Window Managers
-Source0:	http://wmii.de/download/%{name}-%{version}.tar.gz
-# Source0-md5:	fd2ab30ba59079a98159410d2ef6fa0b
+Source0:	http://code.suckless.org/dl/wmii/%{name}-%{version}.tar.gz
+# Source0-md5:	61677e625be99732860e423b7074127f
 Source1:	%{name}.desktop
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-9base.patch
-URL:		http://wmii.de/
-BuildRequires:	XFree86-devel
+URL:		http://www.suckless.org/wmii/
+BuildRequires:	xorg-lib-libX11-devel
 Requires:	9base
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -40,7 +40,7 @@ linii kodu.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/xsessions
+install -d $RPM_BUILD_ROOT%{_datadir}/xsessions
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
