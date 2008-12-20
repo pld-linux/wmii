@@ -23,16 +23,16 @@ diff -Nur wmii-2.5.1/config.mk wmii-2.5.1.new/config.mk
  # includes and libs
  INCLUDES = -I. -I${INCDIR} -I/usr/include -I${X11INC}
 @@ -17,8 +17,8 @@
- VERSION = 2.5.1
+ VERSION = 2.5.2
  
  # flags
 -CFLAGS = -g -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
 -LDFLAGS = ${LIBS}
 +CFLAGS = $(OPTCFLAGS) -Wall ${INCLUDES} -DVERSION=\"${VERSION}\"
 +LDFLAGS = $(OPTLDFLAGS) ${LIBS}
+ # Solaris
+ #CFLAGS = -fast -xtarget=ultra ${INCLUDES} -DVERSION=\"${VERSION}\"
  
- # compiler
- # Note: - under Solaris add -D__EXTENSIONS__ to CFLAGS
 diff -Nur wmii-2.5.1/cmd/Makefile wmii-2.5.1.new/cmd/Makefile
 --- wmii-2.5.1/cmd/Makefile	2006-01-12 16:36:54.000000000 +0000
 +++ wmii-2.5.1.new/cmd/Makefile	2006-01-27 20:47:47.000000000 +0000
@@ -45,3 +45,25 @@ diff -Nur wmii-2.5.1/cmd/Makefile wmii-2.5.1.new/cmd/Makefile
  		-L../libixp -lixp -L../libcext -lcext
  
  wmiifs: ${OBJ_fs}
+--- wmii-2.5.2/cmd/Makefile~	2008-12-20 11:50:52.577887125 +0100
++++ wmii-2.5.2/cmd/Makefile	2008-12-20 11:51:04.211219470 +0100
+@@ -5,7 +5,7 @@
+ 
+ CFLAGS += -I../liblitz -I../libixp -I../libwmii -I../libcext
+ LDFLAGS += -L../liblitz -llitz -L../libixp -lixp \
+-	-L../libwmii -lwmii -L../libcext -lcext
++	-L../libwmii -lwmii -L../libcext -lcext -lm
+ 
+ SRC_bar = wmiibar.c
+ OBJ_bar = ${SRC_bar:.c=.o}
+--- wmii-2.5.2/cmd/wm/Makefile.wm~	2006-01-27 22:09:37.000000000 +0100
++++ wmii-2.5.2/cmd/wm/Makefile.wm	2008-12-20 11:51:16.874551929 +0100
+@@ -6,7 +6,7 @@
+ CFLAGS   += -I../../liblitz -I../../libixp -I../../libwmii \
+             -I../../libcext
+ LDFLAGS  += -L../../liblitz -llitz -L../../libixp -lixp \
+-            -L../../libwmii -lwmii -L../../libcext -lcext
++            -L../../libwmii -lwmii -L../../libcext -lcext -lm
+ 			
+ # Solaris
+ # LDFLAGS += -lsocket

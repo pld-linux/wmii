@@ -157,14 +157,14 @@ diff -Nur wmii-2.5.1/rc/wmiirc wmii-2.5.1.new/rc/wmiirc
  }
  
 @@ -121,11 +121,11 @@
- wmiir write /bar/'^$clab^'/data $"text'
+ wmiir write /bar/'^$clab^'/data $"n'
  wmiir write /wm/event/page-update \
- 'text=`{wmiir read /wm/page/sel/name} ^ \
--`{wmiir read /wm/page/sel/mode/name|awk ''{print substr($0,0,1)}''} ^ \
--`{wmiir read /keys/lookup|awk ''{print substr($0,7,1)}''} \
-+`{wmiir read /wm/page/sel/mode/name|9awk ''{print substr($0,0,1)}''} ^ \
-+`{wmiir read /keys/lookup|9awk ''{print substr($0,7,1)}''} \
- wmiir write /bar/'^$plab^'/data $"text'
+ 'n=`{wmiir read /wm/page/sel/name >[2]/dev/null} \
+-l=`{wmiir read /wm/page/sel/mode/name >[2]/dev/null|awk ''{print substr($0,0,1)}''} \
+-m=`{wmiir read /keys/lookup >[2]/dev/null|awk ''{print substr($0,7,1)}''} \
++l=`{wmiir read /wm/page/sel/mode/name >[2]/dev/null|9awk ''{print substr($0,0,1)}''} \
++m=`{wmiir read /keys/lookup >[2]/dev/null|9awk ''{print substr($0,7,1)}''} \
+ wmiir write /bar/'^$plab^'/data $"n^$"l^$"m'
  
 -for(page in `{wmiir read /wm/page | grep '^[0-9]'}) {
 +for(page in `{wmiir read /wm/page | 9grep '^[0-9]'}) {
